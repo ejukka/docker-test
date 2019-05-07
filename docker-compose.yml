@@ -12,7 +12,7 @@ services:
       MYSQL_USER: test
       MYSQL_PASSWORD: test
     ports:
-      - "3307:3307"
+      - "3306:3306"
 
   flyway_baseline:
     image: boxfuse/flyway:5.2.4
@@ -22,21 +22,21 @@ services:
     depends_on:
       - db
 
-  flyway_migration:
-    image: boxfuse/flyway:5.2.4
-    command: migrate
-    volumes:
-      - ./migrations/:/flyway/sql
-      - ./conf:/flyway/conf
-    depends_on:
-      - flyway_baseline
-    restart: on-failure
+  # flyway_migration:
+  #   image: boxfuse/flyway:5.2.4
+  #   command: migrate
+  #   volumes:
+  #     - ./migrations/:/flyway/sql
+  #     - ./conf:/flyway/conf
+  #   depends_on:
+  #     - flyway_baseline
+  #   restart: on-failure
 
-  mysql_dump:
-    image: mysql:5.6.43
-    volumes:
-      - ./dump/:/dump/
-    command: bash -c "sleep 20 && mysql -h db -uroot -proot --default-character-set=utf8 < <(cat /dump/*.sql)"
-    depends_on:
-      - flyway_migration
+  # mysql_dump:
+  #   image: mysql:5.6.43
+  #   volumes:
+  #     - ./dump/:/dump/
+  #   command: bash -c "sleep 20 && mysql -h db -uroot -proot --default-character-set=utf8 < <(cat /dump/*.sql)"
+  #   depends_on:
+  #     - flyway_migration
 
